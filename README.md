@@ -29,7 +29,7 @@
 
 镜像 `ghcr.io/xudong7587/ugreen-hdmi-tv-remote:0.4.1` 支持 **amd64、arm64、arm/v7**，Docker 自动选择架构。发布流程逐架构构建并运行接收端测试后才推送；ARM NAS 的实际 HDMI 固件接口仍需对应设备验证。
 
-只需下载 Release 中的 `compose.release.yaml` 和 `.env.example`，将后者另存为 `.env` 并填写 NAS 局域网 IP，再运行：
+只需下载 Release 中的 `compose.release.yaml` 和 `default.env.example`（仓库内名为 `.env.example`），将后者另存为 `.env` 并填写 NAS 局域网 IP，再运行：
 
 ```sh
 docker compose -f compose.release.yaml up -d
