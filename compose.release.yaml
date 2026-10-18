@@ -1,0 +1,18 @@
+# Prebuilt multi-architecture image: amd64, arm64 and arm/v7.
+services:
+  nas-remote:
+    image: ghcr.io/xudong7587/ugreen-hdmi-tv-remote:0.4.1
+    command: ["--backend", "native-http", "--native-socket", "/native/display_desktop.http.sock", "--host", "${BIND_ADDRESS:?Set BIND_ADDRESS to the NAS LAN IPv4 address in .env}", "--auto-pair"]
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./data:/data
+      - /run/ugreen/http:/native:ro
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: true
+    pids_limit: 64
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options: {max-size: "2m", max-file: "2"}

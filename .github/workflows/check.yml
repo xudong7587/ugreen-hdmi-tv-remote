@@ -1,0 +1,37 @@
+name: Checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  receiver:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests -v
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: bash gradlew assembleDebug lintDebug
+        working-directory: android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: diagnostic-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t nas-hdmi-remote:ci .
+      - run: docker run --rm --entrypoint python nas-hdmi-remote:ci /app/server.py --help

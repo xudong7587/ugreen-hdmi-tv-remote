@@ -1,0 +1,3 @@
+<resources>
+    <string name="service_description">在所选 HDMI 输入画面中，将方向、确认、返回和菜单键通过局域网转发到 NAS；离开输入画面时停止。不读取屏幕文字。手动诊断时最多记录 90 秒按键，记录仅保存在本机。</string>
+</resources>

@@ -1,0 +1,15 @@
+data/
+*.key
+*.keystore
+*.jks
+.env
+__pycache__/
+*.pyc
+.gradle/
+local.properties
+**/build/
+dist/
+HANDOFF.md
+artifacts/
+*.local.md
+compose.override.yaml

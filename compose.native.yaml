@@ -1,0 +1,21 @@
+# Alternative to compose.yaml; firmware-local API, no uinput device needed.
+services:
+  nas-remote:
+    build: .
+    image: nas-hdmi-remote:0.2.0
+    command: ["--backend", "native-http", "--native-socket", "/native/display_desktop.http.sock", "--host", "${BIND_ADDRESS:-127.0.0.1}", "--auto-pair"]
+    restart: unless-stopped
+    # Host networking is needed to receive LAN broadcast discovery packets.
+    network_mode: host
+    volumes:
+      - ./data:/data
+      # Mount the directory so a firmware socket replacement is visible immediately.
+      - /run/ugreen/http:/native:ro
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    read_only: true
+    pids_limit: 64
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options: {max-size: "2m", max-file: "2"}

@@ -1,0 +1,12 @@
+plugins { id 'com.android.application' }
+android {
+    namespace 'fun.dunn.nasremote'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'fun.dunn.nasremote.diagnostic'
+        minSdk 23
+        targetSdk 35
+        versionCode 7
+        versionName '0.4.1-recovery-test'
+    }
+}

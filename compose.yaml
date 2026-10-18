@@ -1,0 +1,26 @@
+services:
+  nas-remote:
+    build: .
+    image: nas-hdmi-remote:0.1.0
+    restart: unless-stopped
+    ports:
+      - "${BIND_ADDRESS:-127.0.0.1}:8765:8765/tcp"
+    devices:
+      - /dev/uinput:/dev/uinput
+    volumes:
+      - ./data:/data
+    environment:
+      OK_KEY: ENTER
+      BACK_KEY: ESC
+      MENU_KEY: MENU
+    cap_drop: [ALL]
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    pids_limit: 64
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options:
+        max-size: "2m"
+        max-file: "2"
