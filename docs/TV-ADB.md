@@ -2,7 +2,7 @@
 
 ## 安装
 
-安装 APK 后打开一次「HDMI 遥控」，选择 NAS 输入通道。包名保留 `fun.dunn.nasremote.diagnostic`，以兼容之前的安装和设置；服务名为 `fun.dunn.nasremote.RemoteService`。
+安装 APK 后打开一次「HDMI 遥控」，选择 NAS 输入通道。无需配置域名；下方授权工具会自动处理应用标识。
 
 ## 无障碍授权
 

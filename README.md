@@ -1,6 +1,6 @@
 # HDMI 遥控
 
-用电视原装遥控器控制 NAS 的 HDMI 桌面。画面仍走 HDMI，按键通过局域网传输。
+用电视原装遥控器控制 NAS 的 HDMI 桌面。画面仍走 HDMI，按键通过局域网传输。无需配置域名，只需电视与 NAS 在同一局域网。
 
 电视 APK → 无障碍按键服务 → LAN 自动发现 / 握手 → NAS Docker → HDMI 桌面原生接口。
 
@@ -27,7 +27,7 @@
 
 ## NAS Docker Compose（推荐原生接口后端）
 
-镜像 `ghcr.io/xudong7587/ugreen-hdmi-tv-remote:0.4.1` 支持 **amd64、arm64、arm/v7**，Docker 自动选择架构。发布流程逐架构构建并运行接收端测试后才推送；ARM NAS 的实际 HDMI 固件接口仍需对应设备验证。
+预编译镜像地址已包含在 `compose.release.yaml` 中，支持 **amd64、arm64、arm/v7**，Docker 自动选择架构。发布流程逐架构构建并运行接收端测试后才推送；ARM NAS 的实际 HDMI 固件接口仍需对应设备验证。
 
 只需下载 Release 中的 `compose.release.yaml` 和 `default.env.example`（仓库内名为 `.env.example`），将后者另存为 `.env` 并填写 NAS 局域网 IP，再运行：
 
@@ -117,7 +117,7 @@ cd android
 ./gradlew assembleDebug lintDebug  # Windows 使用 gradlew.bat
 ```
 
-APK 位于 `android/app/build/outputs/apk/debug/app-debug.apk`。Release `v0.4.1` 的 APK（内置版本名 `0.4.1-recovery-test`，保留用户验证过的原始二进制） 使用本机开发签名，可覆盖本机此前同签名版本；CI 临时 debug 签名不能保证与已安装版本相同。本次预发布保留既有开发签名；CI 产物只用于测试，请使用 Release 附件覆盖更新。私钥不提交，未来切换正式签名需另行说明迁移。
+APK 位于 `android/app/build/outputs/apk/debug/app-debug.apk`。Release `v0.4.1` 的 APK（内置版本名 `0.4.1-recovery-test`，保留实测二进制） 使用开发签名，可覆盖此前同签名版本；CI 临时 debug 签名不能保证与已安装版本相同。本次预发布保留既有开发签名；CI 产物只用于测试，请使用 Release 附件覆盖更新。私钥不提交，未来切换正式签名需另行说明迁移。
 
 接收端：Python 3.11+，只有标准库依赖。
 
