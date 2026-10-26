@@ -9,4 +9,22 @@ android {
         versionCode 7
         versionName '0.4.1-recovery-test'
     }
+
+    // Keep three standalone download choices, including a universal fallback.
+    // The app currently has no JNI libraries, so its Java code is ABI-independent.
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a', 'arm64-v8a'
+            universalApk true
+        }
+    }
+}
+
+android.applicationVariants.all { variant ->
+    variant.outputs.all { output ->
+        def abi = output.getFilter(com.android.build.OutputFile.ABI) ?: 'universal'
+        outputFileName = "nas-hdmi-remote-${variant.versionName}-${abi}-${variant.buildType.name}.apk"
+    }
 }

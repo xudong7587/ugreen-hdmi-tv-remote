@@ -2,6 +2,8 @@
 
 ## 安装
 
+从 [Release](https://github.com/xudong7587/ugreen-hdmi-tv-remote/releases/tag/v0.4.1) 选择一个 APK：ARMv7（`armeabi-v7a`，32 位 Android）、ARM64（`arm64-v8a`，64 位 Android）或通用版（`universal`，不确定时推荐）。均要求 Android 6.0 及以上；通用指 CPU 架构，不代表所有品牌固件已经适配。当前 v0.4.1 三份附件是同一个原签名纯 Java APK 的不同下载名称，已安装旧版无需更换。详见 [版本选择](../README.md#电视-apk-怎么选) 和 [更新日志](../CHANGELOG.md)。
+
 安装 APK 后打开一次「HDMI 遥控」，选择 NAS 输入通道。无需配置域名；下方授权工具会自动处理应用标识。
 
 ## 无障碍授权

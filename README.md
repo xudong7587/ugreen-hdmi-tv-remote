@@ -4,7 +4,7 @@
 
 电视 APK → 无障碍按键服务 → LAN 自动发现 / 握手 → NAS Docker → HDMI 桌面原生接口。
 
-[下载 APK](https://github.com/xudong7587/ugreen-hdmi-tv-remote/releases/tag/v0.4.1) · [电视权限配置](docs/TV-ADB.md) · [预编译 Compose](compose.release.yaml)
+[下载 APK（三种选择）](https://github.com/xudong7587/ugreen-hdmi-tv-remote/releases/tag/v0.4.1) · [更新日志](CHANGELOG.md) · [电视权限配置](docs/TV-ADB.md) · [预编译 Compose](compose.release.yaml)
 
 ## 快速开始
 
@@ -15,6 +15,22 @@
 首页只有「选择 HDMI 通道」和「更多设置」两个入口。自动连接默认开启；权限、备用连接、通道校准、暂停与按键诊断均在更多设置中。
 
 **当前为实验版。** 已在一台雷鸟 Android 11 电视和一台支持 HDMI 桌面的绿联 NAS 上验证 HDMI 3 方向键转发，以及电视重启后后台自启、再切 HDMI 3 自动连接。未承诺全型号兼容。确认、返回、菜单、长按和长期稳定性仍需各固件验证。
+
+## 电视 APK 怎么选？
+
+三种选择均要求 **Android 6.0（API 23）及以上**，功能一致，一台电视只需安装其中一个。不确定处理器架构时，优先下载通用版。
+
+| 版本 | 下载 | 适用情况 |
+| --- | --- | --- |
+| ARMv7（32 位） | [armeabi-v7a APK](https://github.com/xudong7587/ugreen-hdmi-tv-remote/releases/download/v0.4.1/nas-hdmi-remote-0.4.1-armeabi-v7a.apk) | 32 位 ARM Android 电视，包括 64 位处理器运行 32 位 Android 的情况 |
+| ARM64（64 位） | [arm64-v8a APK](https://github.com/xudong7587/ugreen-hdmi-tv-remote/releases/download/v0.4.1/nas-hdmi-remote-0.4.1-arm64-v8a.apk) | 运行 64 位 Android 的 ARM 电视 |
+| 通用版（推荐） | [universal APK](https://github.com/xudong7587/ugreen-hdmi-tv-remote/releases/download/v0.4.1/nas-hdmi-remote-0.4.1-universal.apk) | 不清楚系统架构，或希望使用一个安装包覆盖不同 CPU 架构 |
+
+**ARMv7** 在 Android 中对应 **armeabi-v7a**。应以电视 Android 系统支持的 ABI 为准，不要只看芯片是否为 64 位。有 ADB 时可执行 `adb shell getprop ro.product.cpu.abilist`：包含 `arm64-v8a` 可选 ARM64，仅有 `armeabi-v7a` 则选 ARMv7；也可直接选通用版。
+
+**本次是下载选项补充：** 当前电视端使用纯 Java，没有 JNI/原生 `.so` 库，原 APK 已无 CPU 架构限制。为保留旧版签名与实测代码，v0.4.1 的三份附件使用同一个已发布 APK，字节内容和 SHA-256 相同，仅文件名区分推荐用途；内置版本名仍为 `0.4.1-recovery-test`。不需要为了 ARMv7 支持卸载重装旧版。
+
+「通用版」指 **CPU 架构通用**，不代表所有电视品牌、系统或固件均能使用。当前输入源适配仍主要面向 TCL/雷鸟；其他品牌可能需要新增适配，无障碍与自启动授权仍需完成。详情见 [更新日志](CHANGELOG.md)。
 
 ## 电视需要 ADB 吗？
 
@@ -117,7 +133,15 @@ cd android
 ./gradlew assembleDebug lintDebug  # Windows 使用 gradlew.bat
 ```
 
-APK 位于 `android/app/build/outputs/apk/debug/app-debug.apk`。Release `v0.4.1` 的 APK（内置版本名 `0.4.1-recovery-test`，保留实测二进制） 使用开发签名，可覆盖此前同签名版本；CI 临时 debug 签名不能保证与已安装版本相同。本次预发布保留既有开发签名；CI 产物只用于测试，请使用 Release 附件覆盖更新。私钥不提交，未来切换正式签名需另行说明迁移。
+一次构建生成三个可独立安装的 APK，位于 `android/app/build/outputs/apk/debug/`：
+
+- `nas-hdmi-remote-0.4.1-recovery-test-armeabi-v7a-debug.apk`
+- `nas-hdmi-remote-0.4.1-recovery-test-arm64-v8a-debug.apk`
+- `nas-hdmi-remote-0.4.1-recovery-test-universal-debug.apk`
+
+Gradle 使用 ABI splits 生成 ARMv7、ARM64 与 universal 三个产物，CI 也分别提供三个下载项。当前没有原生库，因此分架构包并不比通用包拥有更多功能或更小体积；将来若引入原生库，必须重新验证各架构与通用包的实际覆盖范围。
+
+Release `v0.4.1` 的三份附件（内置版本名 `0.4.1-recovery-test`，保留实测二进制）使用原有开发签名，可覆盖此前同签名版本；本机构建和 CI 的 debug 签名不能保证与已安装版本相同。请使用 Release 附件覆盖更新，勿把本机或 CI 产物当作同签名更新包。私钥不提交，未来切换正式签名需另行说明迁移。
 
 接收端：Python 3.11+，只有标准库依赖。
 
